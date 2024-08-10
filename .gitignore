@@ -2,6 +2,7 @@ cached_book_scores_*
 goodreads_cache
 *.kate-swp
 .idea
+*.png~
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

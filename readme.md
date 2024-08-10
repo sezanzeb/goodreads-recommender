@@ -19,7 +19,7 @@ cached files are still working, and create a pull request.
 When `parse_args` of `recommend` or `bootstrap_list_service` is `True`, you can use
 `--help` to display some command line options when running your script.
 
-There are various methods for you own custom filters available in the `Book` class.
+There are various methods for your own custom filters available in the `Book` class.
 
 Sometimes parsing a page can fail, the scraper should usually continue doing its job
 and ignore that particular page.
@@ -86,6 +86,8 @@ Truncated example output from recommendations.txt:
 ...
 ```
 
+![how-it-works.png](how-it-works.png)
+
 # Filtering Lists and Shelves
 
 ```python
@@ -115,7 +117,6 @@ list_service.scan_books(
 # More `list_service.scan_books` calls to your hearts desire may follow. The result
 # will be appended to output.txt.
 ```
-
 The result in output.txt is sorted by author and series. It looks similar to the output
 of recommendations, with the `name` as the healdine of each section.
 
