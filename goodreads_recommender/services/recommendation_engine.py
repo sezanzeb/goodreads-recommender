@@ -41,10 +41,12 @@ class RecommendationEngine:
         download_service: DownloadService,
         report_service: ReportService,
         logger: Logger,
+        number_of_recommendations: int,
     ):
         self.download_service = download_service
         self.report_service = report_service
         self.logger = logger
+        self.number_of_recommendations = number_of_recommendations
 
     def recommend(
         self,
@@ -68,21 +70,17 @@ class RecommendationEngine:
             with open(cached_book_scores_path, "w") as file:
                 file.write(json.dumps(book_scores))
 
-        # The higher, the more information about books that I wouldn't like has to be
-        # downloaded
-        num_printed_books = 40
-
         sorted_book_scores = self._sort_book_scores(book_scores)
         self.report_service.append_books_to_file(
             name="Raw",
-            book_ids=list(sorted_book_scores.keys())[:num_printed_books],
+            book_ids=list(sorted_book_scores.keys())[: self.number_of_recommendations],
             sort=False,
         )
 
         if book_filter is not None:
             self.logger.verbose("Generating filtered recommendations...")
             filtered_book_scores = self._filter_book_scores(
-                max_books=num_printed_books,
+                max_books=self.number_of_recommendations,
                 book_scores=sorted_book_scores,
                 book_filter=book_filter,
             )

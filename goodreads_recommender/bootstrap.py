@@ -52,18 +52,24 @@ def recommend(
     user_id: int,
     cookie: str,
     book_filter: BookFilter,
+    number_of_recommendations: int = 40,
     output_file: Optional[str] = None,
     verbose: bool = False,
     parse_args: bool = False,
     report_shelves: Optional[Set[str]] = None,
 ):
     """
-    book_filter: for example the `strict_filter`
-
     user_id: Taken from the url when navigating to your profile. In this example,
     your user_id is 1234: https://www.goodreads.com/user/show/1234-foo-bar
 
-    cookie: Copied from the request headers in the browser.
+    cookie: Copied from the request headers in the browser. Any cookie that has
+    access to view your goodreads profile page works.
+
+    book_filter: for example the return value when calling `strict_filter()`
+
+    number_of_recommendations: The higher, the more information needs to be downloaded
+    when filtering recommendations, making the script take longer and the cache
+    bigger.
 
     parse_args: Instead of using the passed output_file and verbosity setting, parse
     them from the command-line. Use `--help` when calling your script to get help.
@@ -89,6 +95,7 @@ def recommend(
         download_service,
         report_service,
         logger,
+        number_of_recommendations,
     )
     recommendation_engine.recommend(
         user_id=user_id,

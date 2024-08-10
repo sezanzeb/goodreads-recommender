@@ -57,6 +57,7 @@ def main():
             avoid_genres=["robots", "aliens"],
             require_audiobook=True,
         ),
+        number_of_recommendations=20
     )
 
 
