@@ -24,6 +24,8 @@ There are various methods for your own custom filters available in the `Book` cl
 Sometimes parsing a page can fail, the scraper should usually continue doing its job
 and ignore that particular page.
 
+Requires python 3.11 or newer.
+
 ```bash
 sudo apt install python3-bs4
 git clone https://github.com/sezanzeb/goodreads-recommender.git
