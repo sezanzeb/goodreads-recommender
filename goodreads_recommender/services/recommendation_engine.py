@@ -90,11 +90,7 @@ class RecommendationEngine:
         self.logger = logger
         self.number_of_recommendations = number_of_recommendations
 
-    def recommend(
-        self,
-        user_id: int,
-        book_filter: Optional[BookFilter] = None,
-    ) -> None:
+    def _load_book_scores_pickle(self, user_id: int) -> BookScores:
         cached_book_scores_path = f"cached_book_scores_{user_id}.pickle"
         try:
             with open(cached_book_scores_path, "rb") as file:
@@ -111,6 +107,21 @@ class RecommendationEngine:
             self.logger.log(f'Caching review scores to "{cached_book_scores_path}"')
             with open(cached_book_scores_path, "wb") as file:
                 pickle.dump(book_scores, file)
+
+        return book_scores
+
+    def recommend(
+        self,
+        user_id: int,
+        book_filter: Optional[BookFilter] = None,
+        pickle_book_scores: bool = False,
+    ) -> None:
+        if pickle_book_scores:
+            book_scores = self._load_book_scores_pickle(user_id)
+        else:
+            book_scores = self._get_book_scores_of_users_who_read_the_same_books(
+                user_id
+            )
 
         recommendations = book_scores.get_recommendations()
         self.report_service.append_books_to_file(
@@ -149,6 +160,9 @@ class RecommendationEngine:
 
         return rating_map[str(title)]
 
+    def get_review_page_path(self, user_id, page_nr):
+        return f"review/list/{user_id}?sort=rating&view=reviews&page={page_nr}"
+
     def _get_users_book_scores(
         self,
         user_id: int,
@@ -158,7 +172,7 @@ class RecommendationEngine:
         """Go into the users reviews page, and collect the various books that they rated."""
         book_scores = BookScores()
         for page_nr in range(1, num_review_pages_to_scrape + 1):
-            path = f"review/list/{user_id}?sort=rating&view=reviews&page={page_nr}"
+            path = self.get_review_page_path(user_id, page_nr)
             reviews_soup = self.download_service.get(path)
 
             if reviews_soup.select("#privateProfile"):
@@ -252,7 +266,27 @@ class RecommendationEngine:
         self,
         own_user_id: int,
     ) -> BookScores:
-        own_book_scores = self._get_users_book_scores(own_user_id)
+        num_review_pages_to_scrape = 2
+
+        # Clear any existing reviews of the user, for which recommendations are
+        # generated, to get updated recommendations once more books are read.
+        # TODO I might actually want to have an option to redownload all cached reviews,
+        #  including those of other users.
+        #  - clear_own_cached_reviews
+        #  - clear_others_cached_reviews
+
+        for page_nr in range(1, num_review_pages_to_scrape + 1):
+            try:
+                self.download_service.delete_from_cache(
+                    self.get_review_page_path(own_user_id, page_nr)
+                )
+            except FileNotFoundError:
+                break
+
+        own_book_scores = self._get_users_book_scores(
+            own_user_id,
+            num_review_pages_to_scrape,
+        )
 
         accumulated_book_scores = BookScores()
 

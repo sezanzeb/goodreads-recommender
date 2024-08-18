@@ -14,6 +14,7 @@ class DownloadService:
 
     def delete_from_cache(self, path: str) -> None:
         os.remove(os.path.join("goodreads_cache", path))
+        self.logger.verbose(f'Cleared cache "{path}"')
 
     def get(self, path: str) -> BeautifulSoup:
         """Make a get request to goodreads and cache the result."""
@@ -34,7 +35,7 @@ class DownloadService:
         if self.cookie is not None:
             headers["Cookie"] = self.cookie
 
-        self.logger.verbose(f'downloading "{path}" to "{download_path}"')
+        self.logger.verbose(f'Downloading "{path}" to "{download_path}"')
 
         attempts = 0
         while True:

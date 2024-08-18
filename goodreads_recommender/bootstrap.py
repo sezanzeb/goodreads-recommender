@@ -57,6 +57,7 @@ def recommend(
     verbose: bool = False,
     parse_args: bool = False,
     report_shelves: Optional[Set[str]] = None,
+    pickle_book_scores: bool = False,
 ):
     """
     user_id: Taken from the url when navigating to your profile. In this example,
@@ -77,6 +78,9 @@ def recommend(
     report_shelves: A set of shelves that you want to see in the generated output for
     each book. Helps to understand what kind of book that is. By default uses the
     genres of each book. For example { "slice-of-life", "friendship" }
+
+    pickle_book_scores: If true, create a .pickle file and load it next time, to avoid
+    parsing reviews from scratch each time. Helps to more quickly adjust the filter.
     """
     config_service = ConfigService(
         output_file=output_file,
@@ -100,4 +104,5 @@ def recommend(
     recommendation_engine.recommend(
         user_id=user_id,
         book_filter=book_filter,
+        pickle_book_scores=pickle_book_scores,
     )
