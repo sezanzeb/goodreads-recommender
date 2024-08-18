@@ -42,14 +42,14 @@ from goodreads_recommender.filters.strict_filter import strict_filter
 
 
 def main():
-    # Cookie extracted from the browser
+    # Cookie extracted from the browser (Firefox)
+    # - Open goodreads.com and log in
     # - Go to the developer menu (F12)
-    # - Go to the network requests
+    # - Go to the "Network" tab
     # - Open any page on goodreads
-    # - Find the html request to any https://www.goodreads.com/... site
-    # - Go to the request headers
-    # - In firefox, check the switch to view the raw headers, otherwise they are
-    # truncated
+    # - Find the "html" request to any https://www.goodreads.com/... site
+    # - Go to the "Request Headers"
+    # - check the switch to view the raw headers, otherwise they are truncated
     # - Copy the value of the "Cookie" header here.
     cookie = '...'
 
