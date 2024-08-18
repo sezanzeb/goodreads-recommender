@@ -42,11 +42,20 @@ from goodreads_recommender.filters.strict_filter import strict_filter
 
 
 def main():
-    # Cookie extracted from browser requests. I don't know if goodreads eventually
-    # blocks users who scrape their website. Use at your own risk. The cookie and
-    # the `user_id` don't have to be of the same user, the cookie is just needed to
-    # scrape profile pages.
+    # Cookie extracted from the browser
+    # - Go to the developer menu (F12)
+    # - Go to the network requests
+    # - Open any page on goodreads
+    # - Find the html request to any https://www.goodreads.com/... site
+    # - Go to the request headers
+    # - In firefox, check the switch to view the raw headers, otherwise they are
+    # truncated
+    # - Copy the value of the "Cookie" header here.
     cookie = '...'
+
+    # I don't know if goodreads eventually blocks users who scrape their website. Use
+    # at your own risk. The cookie and the `user_id` don't have to be of the same user,
+    # the cookie is just needed to scrape profile pages.
 
     recommend(
         user_id=1234,

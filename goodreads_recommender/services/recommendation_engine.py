@@ -165,6 +165,9 @@ class RecommendationEngine:
                 # Turns out the private profile error-page seems to also have the
                 # "Sign in" text on it. Beware, check for private profiles first.
                 # Return empty.
+                self.logger.verbose(
+                    f"Profile {user_id} is private, or your cookie is invalid"
+                )
                 return BookScores()
 
             if "Sign in" in str(reviews_soup.select("meta[name=description]")):
