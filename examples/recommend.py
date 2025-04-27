@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from goodreads_recommender.bootstrap import recommend
-from goodreads_recommender.filters.strict_filter import strict_filter
 
 
 def main():
