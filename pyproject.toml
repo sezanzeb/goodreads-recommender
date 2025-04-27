@@ -1,0 +1,20 @@
+[project]
+name = "goodreads-recommender"
+version = "1.0.0"
+dependencies = [
+  "beautifulsoup4",
+  "requests (>=2.32.3,<3.0.0)",
+  "lxml (>=5.4.0,<6.0.0)",
+]
+authors = [
+  {name = "sezanzeb", email = "b8x45ygc9@mozmail.com"},
+]
+requires-python = ">=3.11"
+description = "Recommends and filters books on goodreads"
+readme = "readme.md"
+license = "GPL-3.0"
+license-files = ["LICENSE"]
+keywords = ["goodreads", "recommend", "books", "recommendation"]
+
+[project.urls]
+Homepage = "https://github.com/sezanzeb/goodreads-recommender/"

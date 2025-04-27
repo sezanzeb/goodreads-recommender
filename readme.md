@@ -27,10 +27,16 @@ and ignore that particular page.
 Requires python 3.11 or newer.
 
 ```bash
-sudo apt install python3-bs4
+# clone
 git clone https://github.com/sezanzeb/goodreads-recommender.git
 cd goodreads-recommender
-pip install -e .
+
+# dependencies
+pip install poetry --break-system-packages
+poetry install
+
+# run
+python3 -m poetry run ./examples/recommend.py
 ```
 
 # Recommendations Based on Previous Reads

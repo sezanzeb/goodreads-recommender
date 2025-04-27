@@ -51,7 +51,7 @@ def bootstrap_list_service(
 def recommend(
     user_id: int,
     cookie: str,
-    book_filter: BookFilter,
+    book_filter: Optional[BookFilter] = None,
     number_of_recommendations: int = 40,
     output_file: Optional[str] = None,
     verbose: bool = False,
