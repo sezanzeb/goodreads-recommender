@@ -16,7 +16,7 @@ def main():
     print()
 
     print("Extract a user-id to recommend for from a profile url")
-    print("For example 1324 in https://www.goodreads.com/user/show/1234-foo-bar")
+    print("For example 1234 in https://www.goodreads.com/user/show/1234-foo-bar")
     user_id = int(input("Paste the user-id here: "))
     print()
 

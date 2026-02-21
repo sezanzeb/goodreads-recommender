@@ -1,30 +1,7 @@
 <h1 align="center">📖 📚<br/>Advanced Goodreads Filters<br/>and Recommendations</h1>
 <br/>
 I'm not happy about the possibilities for filtering and getting recommendations on
-goodreads. If you know some python, you can use this library to write simple little
-scripts to filter goodreads for you.
-
-Filters books in lists and shelves, or makes recommendations based on your previous
-reads. By using the custom callback for filters, you can have very powerful and
-fine-grained control over which books to include and remove from your recommendations,
-based on many different custom criteria. An example implementation is available with
-`strict_filter`.
-
-Downloads are cached in the `goodreads_cache` directory, so the next time you run your
-script, it will be a lot faster.
-
-If this tool stops working, please try to make a backward-compatible fix, so that old
-cached files are still working, and create a pull request.
-
-When `parse_args` of `recommend` or `bootstrap_list_service` is `True`, you can use
-`--help` to display some command line options when running your script.
-
-There are various methods for your own custom filters available in the `Book` class.
-
-Sometimes parsing a page can fail, the scraper should usually continue doing its job
-and ignore that particular page.
-
-Requires python 3.11 or newer.
+goodreads.
 
 ```bash
 # clone
@@ -35,9 +12,36 @@ cd goodreads-recommender
 pip install poetry --break-system-packages
 poetry install
 
-# run
+# run examples
+python3 -m poetry run ./examples/filter.py
 python3 -m poetry run ./examples/recommend.py
 ```
+
+If you know some python, you can use this library to write simple little scripts to
+filter goodreads for you.
+
+Filters books in lists and shelves, or makes recommendations based on your previous
+reads. By using the custom callback for filters, you can have very powerful and
+fine-grained control over which books to include and remove from your recommendations,
+based on many different custom criteria. An example implementation is available with
+`strict_filter`.
+
+Downloads are cached in the `goodreads_cache` directory, so the next time you run your
+script, it will be a lot faster.
+
+If this tool stops working, please try (if possible without turning the code into a
+mess) to make a backward-compatible fix, so that old cached files are still working,
+and create a pull request.
+
+When `parse_args` of `recommend` or `bootstrap_list_service` is `True`, you can use
+`--help` to display some command line options when running your script.
+
+There are various methods for your own custom filters available in the `Book` class.
+
+Sometimes parsing a page can fail, the scraper should usually continue doing its job
+and ignore that particular page.
+
+Requires python 3.11 or newer.
 
 # Recommendations Based on Previous Reads
 
@@ -107,7 +111,11 @@ Truncated example output from recommendations.txt:
 
 # Filtering Lists and Shelves
 
+Create a python file containing this:
+
 ```python
+#!/usr/bin/env python3
+
 from goodreads_recommender.bootstrap import bootstrap_list_service
 from goodreads_recommender.filters.strict_filter import strict_filter
 
@@ -129,11 +137,15 @@ list_service.scan_books(
     name="Fantasy",
     list_ids=["176302.Best_Cozy_Fantasy_Books"],
     shelf_ids=["fantasy"],
+    book_ids=["13496.A_Game_of_Thrones"],
 )
 
 # More `list_service.scan_books` calls to your hearts desire may follow. The result
 # will be appended to output.txt.
 ```
+
+And use `python3 -m poetry run your-file.py` to run it.
+
 The result in output.txt is sorted by author and series. It looks similar to the output
 of recommendations, with the `name` as the healdine of each section.
 

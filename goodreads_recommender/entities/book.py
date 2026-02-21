@@ -116,16 +116,18 @@ class Book:
 
         editions_soup = self._get_editions_soup(editions_id)
 
-        # there are false-positives when just searching for "audible", hardcoded in
-        # a html dropdown form or something.
-        # Multiple valid strings indicate audiobooks.
+        # Remove the `select` element, which contains stirngs like "Audible Audio",
+        # to avoid false-positives.
+        for select in editions_soup.find_all("select"):
+            select.decompose()
+
         stringified = str(editions_soup)
+
         return (
             "Audible Studios" in stringified
-            # the comma is important! Otherwise false positives
-            or "Audio CD," in stringified
-            or "Audiobook," in stringified
-            or "Audible Audio," in stringified
+            or "Audio CD" in stringified
+            or "Audiobook" in stringified
+            or "Audible Audio" in stringified
             or "Unabridged" in stringified
         )
 
